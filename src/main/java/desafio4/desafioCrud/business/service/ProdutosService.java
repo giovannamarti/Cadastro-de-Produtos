@@ -5,6 +5,7 @@ import desafio4.desafioCrud.business.dtos.ProdutosDTO;
 import desafio4.desafioCrud.business.mapper.ProdutosConverter;
 import desafio4.desafioCrud.infrastructure.entities.ProdutosEntity;
 import desafio4.desafioCrud.infrastructure.exceptions.BusinessException;
+import desafio4.desafioCrud.infrastructure.exceptions.ConflictException;
 import desafio4.desafioCrud.infrastructure.exceptions.ResourceNotFoundException;
 import desafio4.desafioCrud.infrastructure.repositories.ProdutosRepository;
 import lombok.*;
@@ -25,14 +26,17 @@ import static org.springframework.util.Assert.notNull;
 
 
         public ProdutosDTO cadastrarProdutos(ProdutosDTO dto) {
-
+            if (produtosRepository.existsByNomeIgnoreCase(dto.getNome())){
+                throw new ConflictException("Esse produto já está cadastrado");
+            }
             try {
                 notNull(dto, "Os dados do produto são obrigatórios");
-
                 return produtosConverter.paraProdutosDTO(produtosRepository.save(produtosConverter.paraProdutosEntity(dto)));
+
             } catch (Exception e) {
                 throw new BusinessException("Erro ao cadastrar o produto", e);
             }
+
         }
 
         public ProdutosDTO buscaProdutosPorId(Long id) {
