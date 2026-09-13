@@ -1,4 +1,4 @@
-package desafio4.desafioCrud.business.controller;
+package desafio4.desafioCrud.controller;
 import desafio4.desafioCrud.business.dtos.ProdutosDTO;
 import desafio4.desafioCrud.business.service.ProdutosService;
 import io.swagger.v3.oas.annotations.Operation;
