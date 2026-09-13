@@ -6,6 +6,7 @@ import desafio4.desafioCrud.business.mapper.ProdutosConverter;
 import desafio4.desafioCrud.infrastructure.entities.CategoriasEntity;
 import desafio4.desafioCrud.infrastructure.entities.ProdutosEntity;
 import desafio4.desafioCrud.infrastructure.exceptions.BusinessException;
+import desafio4.desafioCrud.infrastructure.exceptions.ConflictException;
 import desafio4.desafioCrud.infrastructure.exceptions.ResourceNotFoundException;
 import desafio4.desafioCrud.infrastructure.repositories.CategoriasRepository;
 import desafio4.desafioCrud.infrastructure.repositories.ProdutosRepository;
@@ -31,6 +32,9 @@ public class CategoriasService {
 
 
     public CategoriasDTO cadastrarCategorias(CategoriasDTO dto) {
+        if (categoriasRepository.existsBynomeCategoriasIgnoreCase(dto.getNomeCategorias())) {
+            throw new ConflictException("Essa categoria já está cadastrada");
+        }
 
         try {
             notNull(dto, "Os dados da categoria são obrigatórios");
